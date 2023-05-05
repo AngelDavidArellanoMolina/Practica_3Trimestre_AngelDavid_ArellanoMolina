@@ -10,6 +10,8 @@ public class Main {
         Peliculas peliculas = new Peliculas();
 
         int opcion = 0;
+        String titulo, genero;
+        int id, estreno;
         Scanner sc = new Scanner(System.in);
         do{
             System.out.println("======================================================================");
@@ -36,10 +38,23 @@ public class Main {
                     peliculas.eliminarTabla();
                     break;
                 case 3:
-                    peliculas.crearPelicula();
+                    System.out.print("Indica el id: ");
+                    id = sc.nextInt();
+                    sc.nextLine();
+                    System.out.print("Indica el título: ");
+                    titulo = sc.nextLine();
+                    System.out.print("Indica el género (ROMANTICA, MIEDO, COMEDIA): ");
+                    genero = sc.nextLine();
+                    System.out.print("Indica el estreno: ");
+                    estreno = sc.nextInt();
+                    Pelicula p = new Pelicula(id, titulo, genero, estreno );
+
+                    peliculas.crearPelicula(p);
                     break;
                 case 4:
-                    peliculas.eliminarPelicula();
+                    System.out.print("Escribe el id de la película que deseas borrar: ");
+                    id = sc.nextInt();
+                    peliculas.eliminarPelicula(id);
                     break;
                 case 5:
                     System.out.println(peliculas.buscarPelicula());

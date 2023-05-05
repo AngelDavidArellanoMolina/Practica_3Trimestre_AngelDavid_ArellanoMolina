@@ -23,43 +23,31 @@ public class Peliculas implements PeliculasInterface{
         st.executeUpdate("DROP TABLE peliculas");
     }
 
-    public void crearPelicula() throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        String titulo, genero;
-        int id, estreno;
-        System.out.print("Indica el id: ");
-        id = sc.nextInt();
-        sc.nextLine();
-        System.out.print("Indica el título: ");
-        titulo = sc.nextLine();
-        System.out.print("Indica el género (ROMANTICA, MIEDO, COMEDIA): ");
-        genero = sc.nextLine();
-        System.out.print("Indica el estreno: ");
-        estreno = sc.nextInt();
-        Pelicula p = new Pelicula(id, titulo, genero, estreno );
-
-        Statement st = conn.createStatement();
-        st.executeUpdate("INSERT INTO peliculas (id, titulo, genero, estreno)" +
-                "VALUES ( "+p.getId()+", '" +p.getTitulo()+"', '"+p.getGenero()+"', '"+p.getEstreno()+"');");
+    public void crearPelicula(Pelicula p) throws SQLException {
+        PreparedStatement pst = conn.prepareStatement("INSERT INTO peliculas (id, titulo, genero, estreno)" +
+                "VALUES (?, ?, ?, ?);");
+        pst.setInt(1, p.getId());
+        pst.setString(2, p.getTitulo());
+        pst.setString(3, String.valueOf(p.getGenero()));
+        pst.setInt(4, p.getEstreno());
+        pst.executeUpdate();
     }
 
-    public void eliminarPelicula() throws SQLException {
+    public void eliminarPelicula(int id) throws SQLException {
         Scanner sc = new Scanner(System.in);
-        PreparedStatement st = conn.prepareStatement("DELETE FROM peliculas WHERE id = ?");
-        System.out.print("Escribe el id de la película que deseas borrar: ");
-        int id = sc.nextInt();
-        st.setInt(1, id);
-        st.executeUpdate();
+        PreparedStatement pst = conn.prepareStatement("DELETE FROM peliculas WHERE id = ?");
+        pst.setInt(1, id);
+        pst.executeUpdate();
     }
 
 
     public Pelicula buscarPelicula() throws SQLException {
         Scanner sc = new Scanner(System.in);
-        PreparedStatement statement = conn.prepareStatement("SELECT * FROM peliculas WHERE id = ?");
+        PreparedStatement pst = conn.prepareStatement("SELECT * FROM peliculas WHERE id = ?");
         System.out.print("Introduzca el id de la película: ");
         int id = sc.nextInt();
-        statement.setInt(1, id);
-        ResultSet resultSet = statement.executeQuery();
+        pst.setInt(1, id);
+        ResultSet resultSet = pst.executeQuery();
         if (resultSet.next()) {
             int peliculaId = resultSet.getInt("id");
             String titulo = resultSet.getString("titulo");
@@ -71,7 +59,7 @@ public class Peliculas implements PeliculasInterface{
     }
     /*
     public ArrayList<Pelicula> buscarTodo() throws SQLException {
-        Statement statement = conn.createStatement();
+        Statement st = conn.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM peliculas");
         ArrayList<Pelicula> peliculas = new ArrayList<>();
         while (resultSet.next()) {
