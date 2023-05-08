@@ -2,6 +2,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
 import java.util.Scanner;
 
 public class Main {
@@ -13,7 +15,7 @@ public class Main {
         String titulo, genero;
         int id, estreno;
         Scanner sc = new Scanner(System.in);
-        do{
+        do {
             System.out.println("======================================================================");
             System.out.println("0. Salir del programa");
             System.out.println("1. Crear Tabla Película");
@@ -26,10 +28,9 @@ public class Main {
             System.out.println("::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::");
             System.out.print("Introduzca una opción: ");
             opcion = sc.nextInt();
-            System.out.println("======================================================================");
-            switch (opcion){
+            switch (opcion) {
                 case 0:
-                    System.out.println("Gracias por usar el programa");
+                    System.out.println("\033[32m¡Gracias por usar el programa!");
                     break;
                 case 1:
                     peliculas.crearTabla();
@@ -47,7 +48,7 @@ public class Main {
                     genero = sc.nextLine();
                     System.out.print("Indica el estreno: ");
                     estreno = sc.nextInt();
-                    Pelicula p = new Pelicula(id, titulo, genero, estreno );
+                    Pelicula p = new Pelicula(id, titulo, genero, estreno);
 
                     peliculas.crearPelicula(p);
                     break;
@@ -57,48 +58,32 @@ public class Main {
                     peliculas.eliminarPelicula(id);
                     break;
                 case 5:
-                    System.out.println(peliculas.buscarPelicula());
+                    System.out.print("Introduzca el id de la película: ");
+                    id = sc.nextInt();
+                    System.out.println(peliculas.buscarPelicula(id));
                     break;
                 case 6:
+                    ArrayList<Pelicula> todasLasPeliculas = peliculas.buscarTodo();
+                    Iterator<Pelicula> itr = todasLasPeliculas.iterator();
+                    while (itr.hasNext()) {
+                        System.out.println(itr.next().toString());
+                    }
                     break;
                 case 7:
+                    System.out.print("Indica el genero por el que quieras buscar (ROMANTICA, MIEDO, COMEDIA): ");
+                    sc.nextLine();
+                    String g = sc.nextLine();
+                    ArrayList<Pelicula> peliculasPorGeneroYEstreno = peliculas.buscarPorGeneroOrdenarEstreno(g);
+                    peliculasPorGeneroYEstreno.sort(Comparator.comparing(Pelicula::getEstreno).reversed());
+                    Iterator<Pelicula> itr2 = peliculasPorGeneroYEstreno.iterator();
+                    while (itr2.hasNext()) {
+                        System.out.println(itr2.next().toString());
+                    }
                     break;
+                default:
+                    System.out.printf("\033[31mIntroduce una opción válida\n\033[0m");
             }
-        }while (opcion != 0);
+            } while (opcion != 0) ;
 
-
-
-
-        /* // Creamos una película y la insertamos en la tabla
-        Pelicula pelicula1 = new Pelicula(1, "El Padrino", Genero.MIEDO, 1972);
-        peliculas.crearPelicula(pelicula1);
-
-        // Creamos otra película y la insertamos en la tabla
-        Pelicula pelicula2 = new Pelicula(2, "La La Land", Genero.COMEDIA, 2016);
-        peliculas.crearPelicula(pelicula2); */
-
-        /*
-
-        // Buscamos una película por su ID
-        Pelicula peliculaBuscada = peliculas.buscarPelicula(1);
-        System.out.println(peliculaBuscada);
-
-        // Buscamos todas las películas y las imprimimos
-        ArrayList<Pelicula> todasLasPeliculas = peliculas.buscarTodo();
-        for (Pelicula p : todasLasPeliculas) {
-            System.out.println(p.toString());
         }
-
-        // Buscamos todas las películas de un género específico y las ordenamos por fecha de estreno
-        ArrayList<Pelicula> peliculasPorGeneroYEstreno = peliculas.buscarPorGeneroOrdenarEstreno("COMEDIA");
-        for (Pelicula p : peliculasPorGeneroYEstreno) {
-            System.out.println(p);
-        }
-
-        /* // Eliminamos una película por su ID
-        peliculas.eliminarPelicula(2);
-
-
-       */
     }
-}

@@ -7,9 +7,9 @@ public class Pelicula {
     public Pelicula(int id, String titulo, String genero, int estreno) {
         this.id = id;
         this.titulo = titulo;
-        if(Genero.COMEDIA.toString().equals(genero) || Genero.MIEDO.toString().equals(genero) ||
-                Genero.ROMANTICA.toString().equals(genero)) {
-            this.genero = Genero.valueOf(genero);
+        if(Genero.COMEDIA.toString().equals(genero.toUpperCase()) || Genero.MIEDO.toString().equals(genero.toUpperCase()) ||
+                Genero.ROMANTICA.toString().equals(genero.toUpperCase())) {
+            this.genero = Genero.valueOf(genero.toUpperCase());
         } else {
             throw new IllegalArgumentException("no existe un genero llamado "+genero);
         }
@@ -33,9 +33,9 @@ public class Pelicula {
     }
 
     public void setGenero(String genero) {
-        if(Genero.COMEDIA.toString().equals(genero) || Genero.MIEDO.toString().equals(genero) ||
-                Genero.ROMANTICA.toString().equals(genero)) {
-            this.genero = Genero.valueOf(genero);
+        if(Genero.COMEDIA.toString().equals(genero.toUpperCase()) || Genero.MIEDO.toString().equals(genero.toUpperCase()) ||
+                Genero.ROMANTICA.toString().equals(genero.toUpperCase())) {
+            this.genero = Genero.valueOf(genero.toUpperCase());
         } else {
             throw new IllegalArgumentException("no existe un genero llamado "+genero);
         }
@@ -51,11 +51,9 @@ public class Pelicula {
 
     @Override
     public String toString() {
-        return "Pelicula{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", genero=" + genero +
-                ", estreno=" + estreno +
-                '}';
+        return "Id: " + id +
+                "\t    Título: '" + titulo + '\'' +
+                "\t    Género: " + genero +
+                "\t    Año de estreno: " + estreno;
     }
 }
