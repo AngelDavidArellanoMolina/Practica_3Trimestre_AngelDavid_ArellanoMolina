@@ -1,5 +1,3 @@
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -11,7 +9,7 @@ public class Main {
 
         Peliculas peliculas = new Peliculas();
 
-        int opcion = 0;
+        int opcion;
         String titulo, genero;
         int id, estreno;
         Scanner sc = new Scanner(System.in);
@@ -49,7 +47,6 @@ public class Main {
                     System.out.print("Indica el estreno: ");
                     estreno = sc.nextInt();
                     Pelicula p = new Pelicula(id, titulo, genero, estreno);
-
                     peliculas.crearPelicula(p);
                     break;
                 case 4:
@@ -64,10 +61,7 @@ public class Main {
                     break;
                 case 6:
                     ArrayList<Pelicula> todasLasPeliculas = peliculas.buscarTodo();
-                    Iterator<Pelicula> itr = todasLasPeliculas.iterator();
-                    while (itr.hasNext()) {
-                        System.out.println(itr.next().toString());
-                    }
+                    imprimir_arraylist(todasLasPeliculas);
                     break;
                 case 7:
                     System.out.print("Indica el genero por el que quieras buscar (ROMANTICA, MIEDO, COMEDIA): ");
@@ -75,15 +69,18 @@ public class Main {
                     String g = sc.nextLine();
                     ArrayList<Pelicula> peliculasPorGeneroYEstreno = peliculas.buscarPorGeneroOrdenarEstreno(g);
                     peliculasPorGeneroYEstreno.sort(Comparator.comparing(Pelicula::getEstreno).reversed());
-                    Iterator<Pelicula> itr2 = peliculasPorGeneroYEstreno.iterator();
-                    while (itr2.hasNext()) {
-                        System.out.println(itr2.next().toString());
-                    }
+                    imprimir_arraylist(peliculasPorGeneroYEstreno);
                     break;
                 default:
-                    System.out.printf("\033[31mIntroduce una opción válida\n\033[0m");
+                    System.out.println("\033[31mIntroduce una opción válida\n\033[0m");
             }
             } while (opcion != 0) ;
+        }
 
+        public static void imprimir_arraylist (ArrayList <Pelicula> listado_peliculas){
+            Iterator <Pelicula> itr = listado_peliculas.iterator();
+            while (itr.hasNext()) {
+                System.out.println(itr.next().toString());
+            }
         }
     }

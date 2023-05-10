@@ -1,6 +1,5 @@
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Peliculas implements PeliculasInterface{
 
@@ -18,11 +17,13 @@ public class Peliculas implements PeliculasInterface{
         Statement statement = conn.createStatement();
         statement.executeUpdate("CREATE TABLE peliculas (id INT PRIMARY KEY, titulo VARCHAR(50)," +
                 "genero VARCHAR(20), estreno INT)");
+        System.out.println("Tabla creada correctamente");
     }
 
     public void eliminarTabla() throws SQLException {
         Statement st = conn.createStatement();
         st.executeUpdate("DROP TABLE peliculas");
+        System.out.println("Tabla eliminada correctamente");
     }
 
     public void crearPelicula(Pelicula p) throws SQLException {
@@ -33,12 +34,14 @@ public class Peliculas implements PeliculasInterface{
         pst.setString(3, String.valueOf(p.getGenero()));
         pst.setInt(4, p.getEstreno());
         pst.executeUpdate();
+        System.out.println("Película insertada correctamente");
     }
 
     public void eliminarPelicula(int id) throws SQLException {
         PreparedStatement pst = conn.prepareStatement("DELETE FROM peliculas WHERE id = ?");
         pst.setInt(1, id);
         pst.executeUpdate();
+        System.out.println("Película eliminada correctamente");
     }
     public Pelicula buscarPelicula(int id) throws SQLException {
         PreparedStatement pst = conn.prepareStatement("SELECT * FROM peliculas WHERE id = ?");
